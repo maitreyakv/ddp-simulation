@@ -118,7 +118,7 @@ function sol = ddp(x_0, x_star, t_f, N, dyn, cost, u_max, num_iter, alpha)
         
         % Compute control energy usage
         for k = 1:N-1
-            E(i) = E(i) + 0.5 .* u{k}.' * u{k};
+            E(i) = E(i) + 0.5 .* u{k}.' * u{k} .* dt;
         end
         
         % Compute terminal value function and derivatives

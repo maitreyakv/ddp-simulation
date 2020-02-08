@@ -219,7 +219,7 @@ hold on;
 plot(1:length(sol.E), sol.E, "r", "LineWidth", 2);
 grid on;
 xlabel("DDP Iteration [-]", "Interpreter", "latex", "FontSize", 20);
-ylabel("Control Energy Usage [-]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Control Energy Usage [$N^{2}m^{2}s$]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
