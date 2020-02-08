@@ -161,6 +161,7 @@ movie(gcf, frames, 9999, fps);
 
 % Plot angle history
 figure;
+pbaspect([5 3 1])
 hold on;
 plot(sol.t, rad2deg(theta), "k", "LineWidth", 2);
 grid on;
@@ -173,6 +174,7 @@ ax.TickLabelInterpreter = "latex";
 
 % Plot trajectory in state space
 figure;
+pbaspect([5 3 1])
 hold on;
 plot(rad2deg(theta), rad2deg(theta_dot), "k", "LineWidth", 2);
 plot(rad2deg(x_0(1)), rad2deg(x_0(2)), "o", "MarkerFaceColor", "blue", ...
@@ -190,6 +192,7 @@ ax.TickLabelInterpreter = "latex";
 
 % Plot control sequence
 figure;
+pbaspect([5 3 1])
 hold on;
 plot(sol.t, u, "b", "LineWidth", 2);
 grid on;
@@ -202,6 +205,7 @@ ax.TickLabelInterpreter = "latex";
 
 % Plot cost function vs iteration
 figure;
+pbaspect([5 3 1])
 hold on;
 plot(1:length(sol.J), sol.J, "r", "LineWidth", 2);
 grid on;
@@ -215,11 +219,12 @@ ax.YScale = 'log';
 
 % Plot control energy vs iteration
 figure;
+pbaspect([5 3 1])
 hold on;
 plot(1:length(sol.E), sol.E, "r", "LineWidth", 2);
 grid on;
 xlabel("DDP Iteration [-]", "Interpreter", "latex", "FontSize", 20);
-ylabel("Control Energy Usage [$N^{2}m^{2}s$]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Control Energy Usage [$\rm{N}^{2}\rm{m}^{2}\rm{s}$]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
@@ -257,6 +262,7 @@ end
 
 % Plot the angle trajectories
 figure;
+pbaspect([5 3 1])
 grid on;
 hold on;
 for n = 1:num_trials
@@ -276,6 +282,6 @@ ylabel("Pendulum Angle [deg]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
-%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta-noise.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta-noise-1e2.png", "-dpng", "-r500")
 
 return;
