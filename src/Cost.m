@@ -1,3 +1,6 @@
+% Copyright (C) 2019 Maitreya Venkataswamy - All Rights Reserved
+
+% Abstract class for terminal and running costs
 classdef (Abstract) Cost
     methods
         % Terminal state cost

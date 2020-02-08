@@ -1,3 +1,5 @@
+% Copyright (C) 2019 Maitreya Venkataswamy - All Rights Reserved
+
 %% Setup
 
 clc;
@@ -43,7 +45,7 @@ num_iter = 50;
 alpha = 0.5;
 
 % Video framerate
-fps = 30;
+fps = 10;
 
 %% Execution of DDP
 
@@ -92,6 +94,11 @@ yl = [];
 % Counter for frames processed
 n = 1;
 
+% Open video for writing
+%vid = VideoWriter('inverted-pendulum', 'Uncompressed AVI');
+%vid.FrameRate = fps;
+%open(vid);
+
 % Loop over points in time to process frames at
 for k = 1:ceil((1.0 ./ fps) ./ sol.dt):N
     % Plot the pendlum root
@@ -121,14 +128,17 @@ for k = 1:ceil((1.0 ./ fps) ./ sol.dt):N
         ylim(yl);
     end
     
-    % Apply grid to background of frame
-    grid on;
+     % Apply blank background
+    axis off;
 
     % Render the frame
     drawnow;
     
     % Record the frame and store in the structure
     frames(n) = getframe(fig);
+    
+    % Write frame to video
+    %writeVideo(vid, frames(n));
     
     % Display progress to command line
     fprintf("rendering video frame %d out of %d...\n", n, num_frame);
@@ -159,6 +169,7 @@ ylabel("Pendulum Angle [deg]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta.png", "-dpng", "-r500")
 
 % Plot trajectory in state space
 figure;
@@ -175,6 +186,7 @@ ylabel("Pendulum Angular Speed [deg/s]", "Interpreter", "latex", ...
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/traj.png", "-dpng", "-r500")
 
 % Plot control sequence
 figure;
@@ -186,6 +198,7 @@ ylabel("Control Input [N]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/u.png", "-dpng", "-r500")
 
 % Plot cost function vs iteration
 figure;
@@ -198,5 +211,71 @@ ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
 ax.YScale = 'log';
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/J.png", "-dpng", "-r500")
+
+% Plot control energy vs iteration
+figure;
+hold on;
+plot(1:length(sol.E), sol.E, "r", "LineWidth", 2);
+grid on;
+xlabel("DDP Iteration [-]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Control Energy Usage [-]", "Interpreter", "latex", "FontSize", 20);
+ax = gca();
+ax.FontSize = 16;
+ax.TickLabelInterpreter = "latex";
+ax.YScale = 'log';
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/E.png", "-dpng", "-r500")
+
+%% Evaluate control robustness in presence of noise in dynamics
+
+% Number of trials to compute
+num_trials = 100;
+
+% Allocate cell array to contain trajectories
+x_list = cell(num_trials, 1);
+
+% Noise standard deviation
+sigma = 1e2;
+
+% Simulate all the trajectories with noise
+for n = 1:num_trials
+    % Allocate array for trajectory
+    x = cell(length(sol.x), 1);
+    
+    % Initialize trajectory initial state
+    x{1} = x_0;
+
+    % Compute trajectory with computed control sequence with noise
+    for k = 1:length(sol.x)-1
+        noise = normrnd(0.0, sigma, length(u_max));
+        x{k+1} = x{k} + dyn.F(x{k}, sol.u{k} + noise) .* sol.dt;
+    end
+    
+    % Add trajectory to list of computed trajectories
+    x_list{n} = x;
+end
+
+% Plot the angle trajectories
+figure;
+grid on;
+hold on;
+for n = 1:num_trials
+    % Extract the pendulum angle information from the solutions
+    theta = zeros(1, length(sol.x));
+    theta_dot = zeros(1, length(sol.x));
+    for k = 1:length(sol.x)
+        theta(k) = x_list{n}{k}(1);
+        theta_dot(k) = x_list{n}{k}(2);
+    end
+    
+    % Plot the trajectory
+    plot(sol.t, theta)
+end
+xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pendulum Angle [deg]", "Interpreter", "latex", "FontSize", 20);
+ax = gca();
+ax.FontSize = 16;
+ax.TickLabelInterpreter = "latex";
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta-noise.png", "-dpng", "-r500")
 
 return;

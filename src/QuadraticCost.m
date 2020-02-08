@@ -1,3 +1,7 @@
+% Copyright (C) 2019 Maitreya Venkataswamy - All Rights Reserved
+
+% Class for quadratic terminal and running costs that inherits from
+% abstract Cost class
 classdef QuadraticCost < Cost
     properties
         Q_f; % terminal cost weights

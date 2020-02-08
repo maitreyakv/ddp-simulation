@@ -1,8 +1,28 @@
+% Copyright (C) 2019 Maitreya Venkataswamy - All Rights Reserved
+
+%% Differential Dynamic Programming Algorithm Function
+
+% Performs Differential Dynamic Programming Algorithm to produce a
+% locally optimal control sequence.
+%
+% Inputs
+% 
+% x_0      : initial state vector
+% x_star   : target state vector
+% t_f      : time horizon
+% N        : number of discretizations of time
+% dyn      : instance of Dynamics class
+% cost     : instance of Cost class
+% u_max    : maximum magnitude of control, used for clamping
+% num_iter : number of DDP iterations
+% alpha    : DDP learning parameter for line searching
+%
+% Outputs
+% 
+% sol : structure with solution components
+%
 function sol = ddp(x_0, x_star, t_f, N, dyn, cost, u_max, num_iter, alpha)
-    %% Create arrays for DDP
-    
-    % Solution structure
-    sol = struct;
+    %% Allocate arrays for DDP
 
     % Time stamp array and timestep
     t = linspace(0.0, t_f, N);
@@ -81,13 +101,7 @@ function sol = ddp(x_0, x_star, t_f, N, dyn, cost, u_max, num_iter, alpha)
                 
                 % Return error if problem with trajectory
                 if isnan(x_new{k+1})
-                    sol.error = 1;
-                    sol.x = x;
-                    sol.u = u;
-                    sol.t = t;
-                    sol.dt = t(2) - t(1);
-                    sol.J = J;
-                    sol.E = E;
+                    sol = assemble_solution(x, u, t, J, E, 1);
                     return
                 end
             end
@@ -132,10 +146,9 @@ function sol = ddp(x_0, x_star, t_f, N, dyn, cost, u_max, num_iter, alpha)
                       + dyn.beta(x{k}, u{k}, dt).' * V_xx{k+1} ...
                       * dyn.Phi(x{k}, u{k}, dt);
                
-            % Compute the value function and the derivatives
-            V(k) = 0.0; % TEMP NEED TO FIX THIS LATER
-            V_x{k} = Q_x{k} - Q_xu{k} * inv(Q_uu{k}) * Q_u{k};
-            V_xx{k} = Q_xx{k} - Q_xu{k} * inv(Q_uu{k}) * Q_ux{k};
+            % Compute the value function derivatives
+            V_x{k} = Q_x{k} - Q_xu{k} * (Q_uu{k} \ Q_u{k});
+            V_xx{k} = Q_xx{k} - Q_xu{k} * (Q_uu{k} \ Q_ux{k});
         end
     end
     
@@ -143,11 +156,37 @@ function sol = ddp(x_0, x_star, t_f, N, dyn, cost, u_max, num_iter, alpha)
     
     fprintf("finished DDP, assembling results for post-processing...\n");
     
-    sol.error = 0;
+    % Assemble solution
+    sol = assemble_solution(x, u, t, J, E, 0);
+end
+
+%% Helper Functions for DDP Algorithm
+
+% Assembles and returns solution structure
+%
+% Inputs
+%
+% x     : locally optimal state trajectory
+% u     : locally optimal control sequence
+% t     : discretized time stamps
+% J     : iteration history of cost function
+% E     : iteration history of control energy
+% error : zero if no error, nonzero else
+%
+% Outputs
+%
+% sol : solution structure
+function sol = assemble_solution(x, u, t, J, E, error)
+
+    % Solution structure
+    sol = struct;
+    sol.error = error;
     sol.x = x;
     sol.u = u;
     sol.t = t;
     sol.dt = t(2) - t(1);
     sol.J = J;
     sol.E = E;
+    
+    return
 end

@@ -1,3 +1,6 @@
+% Copyright (C) 2019 Maitreya Venkataswamy - All Rights Reserved
+
+% Abstract class for system dynamics
 classdef (Abstract) Dynamics
     methods
         % Equations of motion in state space representation

@@ -1,3 +1,5 @@
+% Copyright (C) 2019 Maitreya Venkataswamy - All Rights Reserved
+
 %% Setup
 
 clc;
@@ -35,7 +37,7 @@ Q_f = [10.0 0 0 0;
        0 10.0 0 0;
        0 0 10.0 0;
        0 0 0 10.0];
-R = 0.1;
+R = 0.01;
 cost = QuadraticCost(Q_f, R);
 
 % Number of DDP iterations
@@ -45,7 +47,7 @@ num_iter = 100;
 alpha = 0.1;
 
 % Video framerate
-fps = 10;
+fps = 30;
 
 %% Execution of DDP
 
@@ -96,9 +98,9 @@ yl = [];
 n = 1;
 
 % Open video for writing
-vid = VideoWriter('cart-pole', 'Uncompressed AVI');
-vid.FrameRate = fps;
-open(vid);
+%vid = VideoWriter('cart-pole', 'Uncompressed AVI');
+%vid.FrameRate = fps;
+%open(vid);
 
 % Loop over points in time to process frames at
 for k = 1:ceil((1.0 ./ fps) ./ sol.dt):N
@@ -146,7 +148,7 @@ for k = 1:ceil((1.0 ./ fps) ./ sol.dt):N
     frames(n) = getframe(fig);
     
     % Write frame to video
-    writeVideo(vid, frames(n));
+    %writeVideo(vid, frames(n));
     
     % Display progress to command line
     fprintf("rendering video frame %d out of %d...\n", n, num_frame);
@@ -170,20 +172,44 @@ movie(gcf, frames, 9999, fps);
 
 %% Plot trajectories
 
+% Plot cart position history
 figure;
 hold on;
-plot(sol.t, z, "k");
+plot(sol.t, z, "k", "Linewidth", 2);
+grid on;
+xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Cart Position [m]", "Interpreter", "latex", "FontSize", 20);
+ax = gca();
+ax.FontSize = 16;
+ax.TickLabelInterpreter = "latex";
 
+% Plot pole angle history
 figure;
 hold on;
-plot(sol.t, theta, "k");
+plot(sol.t, theta, "k", "Linewidth", 2);
+grid on;
+xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pole Angle [deg]", "Interpreter", "latex", "FontSize", 20);
+ax = gca();
+ax.FontSize = 16;
+ax.TickLabelInterpreter = "latex";
 
+% Plot trajectory in partial state space
 figure;
 hold on;
-plot(z, theta, "k");
-plot(x_0(1), x_0(3), '-bo');
-plot(x_star(1), x_star(3), '-go')
+plot(z, theta, "k", "Linewidth", 2);
+plot(x_0(1), x_0(3), 'o', "MarkerFaceColor", "blue", ...
+                          "MarkerEdgeColor", "blue");
+plot(x_star(1), x_star(3), 'o', "MarkerFaceColor", "green", ...
+                                "MarkerEdgeColor", "green")
+grid on;
+xlabel("Cart Position [m]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pole Angular [deg]", "Interpreter", "latex", "FontSize", 20);
+ax = gca();
+ax.FontSize = 16;
+ax.TickLabelInterpreter = "latex";
 
+% Plot control sequence
 figure;
 hold on;
 plot(sol.t, u, "b", "LineWidth", 2);
@@ -194,7 +220,7 @@ ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
 
-
+% Plot cost function vs iteration
 figure;
 hold on;
 plot(1:length(sol.J), sol.J, "r", "LineWidth", 2);
@@ -206,6 +232,7 @@ ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
 ax.YScale = 'log';
 
+% Plot control energy vs iteration
 figure;
 hold on;
 plot(1:length(sol.E), sol.E, "r", "LineWidth", 2);

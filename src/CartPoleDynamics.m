@@ -1,3 +1,7 @@
+% Copyright (C) 2019 Maitreya Venkataswamy - All Rights Reserved
+
+% Class for dynamics of cart-pole system that inherits from abstract 
+% Dynamics class.
 classdef CartPoleDynamics < Dynamics
     properties
         m_c; % mass of pole
@@ -32,7 +36,7 @@ classdef CartPoleDynamics < Dynamics
             dxdt = [x(2); z_ddot; x(4); theta_ddot];
         end
         
-        % Linearized equations of motion (determined using symbolic math)
+        % Linearized equations of motion (determined using CAS)
         function Phi = Phi(obj, x, u, dt)
             F_x = zeros(numel(x));
             

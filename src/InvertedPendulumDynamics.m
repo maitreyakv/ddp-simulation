@@ -1,3 +1,7 @@
+% Copyright (C) 2019 Maitreya Venkataswamy - All Rights Reserved
+
+% Class for dynamics of inverted pendulum system that inherits from 
+% abstract Dynamics class.
 classdef InvertedPendulumDynamics < Dynamics
     properties
         m; % mass pendulum
