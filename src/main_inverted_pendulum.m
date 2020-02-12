@@ -172,6 +172,19 @@ ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
 %print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta.png", "-dpng", "-r500")
 
+% Plot anglular velocity history
+figure;
+pbaspect([5 3 1])
+hold on;
+plot(sol.t, rad2deg(theta_dot), "k", "LineWidth", 2);
+grid on;
+xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pendulum Anglular Velocity [deg]", "Interpreter", "latex", "FontSize", 20);
+ax = gca();
+ax.FontSize = 16;
+ax.TickLabelInterpreter = "latex";
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta_dot.png", "-dpng", "-r500")
+
 % Plot trajectory in state space
 figure;
 pbaspect([5 3 1])
