@@ -187,7 +187,7 @@ ylabel("Cart Position [m]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
-print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/z.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/z.png", "-dpng", "-r500")
 
 % Plot cart velocity history
 figure;
@@ -200,7 +200,7 @@ ylabel("Cart velocity [m/s]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
-print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/z_dot.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/z_dot.png", "-dpng", "-r500")
 
 % Plot pole angle history
 figure;
@@ -209,11 +209,11 @@ hold on;
 plot(sol.t, theta, "k", "Linewidth", 2);
 grid on;
 xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
-ylabel("Pole Angle [deg]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pole Angle [rad]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
-print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/theta.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/theta.png", "-dpng", "-r500")
 
 % Plot pole anglular velocity history
 figure;
@@ -222,11 +222,11 @@ hold on;
 plot(sol.t, theta_dot, "k", "Linewidth", 2);
 grid on;
 xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
-ylabel("Pole Anglular Velocity [deg/s]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pole Anglular Velocity [rad/s]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
-print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/theta_dot.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/theta_dot.png", "-dpng", "-r500")
 
 % Plot trajectory in partial state space
 figure;
@@ -239,11 +239,11 @@ plot(x_star(1), x_star(3), 'o', "MarkerFaceColor", "green", ...
                                 "MarkerEdgeColor", "green")
 grid on;
 xlabel("Cart Position [m]", "Interpreter", "latex", "FontSize", 20);
-ylabel("Pole Angular [deg]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pole Angular [rad]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
-print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/traj.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/traj.png", "-dpng", "-r500")
 
 % Plot control sequence
 figure;
@@ -256,7 +256,7 @@ ylabel("Control Input [N]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
-print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/u.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/u.png", "-dpng", "-r500")
 
 % Plot cost function vs iteration
 figure;
@@ -270,7 +270,7 @@ ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
 ax.YScale = 'log';
-print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/J.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/J.png", "-dpng", "-r500")
 
 % Plot control energy vs iteration
 figure;
@@ -284,6 +284,6 @@ ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
 ax.YScale = 'log';
-print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/E.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/cart-pole/E.png", "-dpng", "-r500")
 
 return;

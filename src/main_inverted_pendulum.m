@@ -166,7 +166,7 @@ hold on;
 plot(sol.t, rad2deg(theta), "k", "LineWidth", 2);
 grid on;
 xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
-ylabel("Pendulum Angle [deg]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pendulum Angle [rad]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
@@ -179,7 +179,7 @@ hold on;
 plot(sol.t, rad2deg(theta_dot), "k", "LineWidth", 2);
 grid on;
 xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
-ylabel("Pendulum Anglular Velocity [deg/s]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pendulum Anglular Velocity [rad/s]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
@@ -196,7 +196,7 @@ plot(rad2deg(x_star(1)), rad2deg(x_star(2)), "o", "MarkerFaceColor", ...
                                      "green", "MarkerEdgeColor", "green");
 grid on;
 xlabel("Pendulum Angle [deg]", "Interpreter", "latex", "FontSize", 20);
-ylabel("Pendulum Angular Speed [deg/s]", "Interpreter", "latex", ...
+ylabel("Pendulum Angular Speed [rad/s]", "Interpreter", "latex", ...
        "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
@@ -253,7 +253,7 @@ num_trials = 100;
 x_list = cell(num_trials, 1);
 
 % Noise standard deviation
-sigma = 1e1;
+sigma = 1e0;
 
 % Simulate all the trajectories with noise
 for n = 1:num_trials
@@ -291,11 +291,11 @@ for n = 1:num_trials
     plot(sol.t, theta)
 end
 xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
-ylabel("Pendulum Angle [deg]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pendulum Angle [rad]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
-%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta-noise-1e1.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta-noise-1e0.png", "-dpng", "-r500")
 
 %% Utilize Feedback to adjust control in presence of disturbances
 
@@ -306,7 +306,7 @@ num_trials = 100;
 x_list = cell(num_trials, 1);
 
 % Noise standard deviation
-sigma = 1e1;
+sigma = 1e0;
 
 % Simulate all the trajectories with noise
 for n = 1:num_trials
@@ -348,10 +348,10 @@ for n = 1:num_trials
     plot(sol.t, theta)
 end
 xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
-ylabel("Pendulum Angle [deg]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pendulum Angle [rad]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
-%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta-robust-1e1.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta-robust-1e0.png", "-dpng", "-r500")
 
 return;
