@@ -45,7 +45,7 @@ num_iter = 50;
 alpha = 0.5;
 
 % Video framerate
-fps = 10;
+fps = 30;
 
 %% Execution of DDP
 
