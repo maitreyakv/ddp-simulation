@@ -179,7 +179,7 @@ hold on;
 plot(sol.t, rad2deg(theta_dot), "k", "LineWidth", 2);
 grid on;
 xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
-ylabel("Pendulum Anglular Velocity [deg]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pendulum Anglular Velocity [deg/s]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
@@ -253,7 +253,7 @@ num_trials = 100;
 x_list = cell(num_trials, 1);
 
 % Noise standard deviation
-sigma = 1e2;
+sigma = 1e1;
 
 % Simulate all the trajectories with noise
 for n = 1:num_trials
@@ -295,6 +295,63 @@ ylabel("Pendulum Angle [deg]", "Interpreter", "latex", "FontSize", 20);
 ax = gca();
 ax.FontSize = 16;
 ax.TickLabelInterpreter = "latex";
-%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta-noise-1e2.png", "-dpng", "-r500")
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta-noise-1e1.png", "-dpng", "-r500")
+
+%% Utilize Feedback to adjust control in presence of disturbances
+
+% Number of trials to compute
+num_trials = 100;
+
+% Allocate cell array to contain trajectories
+x_list = cell(num_trials, 1);
+
+% Noise standard deviation
+sigma = 1e1;
+
+% Simulate all the trajectories with noise
+for n = 1:num_trials
+    % Allocate array for trajectory
+    x = cell(length(sol.x), 1);
+    
+    % Initialize trajectory initial state
+    x{1} = x_0;
+
+    % Compute trajectory with updating control sequence with noise
+    for k = 1:length(sol.x)-1
+        noise = normrnd(0.0, sigma, length(u_max));
+        
+        % Compute control correction for disturbance using feedback term
+        du = -inv(sol.Q_uu{k}) * sol.Q_ux{k} * (x{k} - sol.x{k});
+        
+        x{k+1} = x{k} + dyn.F(x{k}, sol.u{k} + du + noise) .* sol.dt;
+    end
+    
+    % Add trajectory to list of computed trajectories
+    x_list{n} = x;
+end
+
+% Plot the angle trajectories
+figure;
+pbaspect([5 3 1])
+grid on;
+hold on;
+for n = 1:num_trials
+    % Extract the pendulum angle information from the solutions
+    theta = zeros(1, length(sol.x));
+    theta_dot = zeros(1, length(sol.x));
+    for k = 1:length(sol.x)
+        theta(k) = x_list{n}{k}(1);
+        theta_dot(k) = x_list{n}{k}(2);
+    end
+    
+    % Plot the trajectory
+    plot(sol.t, theta)
+end
+xlabel("Time [s]", "Interpreter", "latex", "FontSize", 20);
+ylabel("Pendulum Angle [deg]", "Interpreter", "latex", "FontSize", 20);
+ax = gca();
+ax.FontSize = 16;
+ax.TickLabelInterpreter = "latex";
+%print("~/Dropbox/gatech_classes/ae4803/hw/hw1/report/fig/inverted-pendulum/theta-robust-1e1.png", "-dpng", "-r500")
 
 return;

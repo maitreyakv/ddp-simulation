@@ -101,7 +101,8 @@ function sol = ddp(x_0, x_star, t_f, N, dyn, cost, u_max, num_iter, alpha)
                 
                 % Return error if problem with trajectory
                 if isnan(x_new{k+1})
-                    sol = assemble_solution(x, u, t, J, E, 1);
+                    sol = assemble_solution(x, u, t, J, E, Q_u, ...
+                                            Q_uu, Q_ux, 1);
                     return
                 end
             end
@@ -157,7 +158,7 @@ function sol = ddp(x_0, x_star, t_f, N, dyn, cost, u_max, num_iter, alpha)
     fprintf("finished DDP, assembling results for post-processing...\n");
     
     % Assemble solution
-    sol = assemble_solution(x, u, t, J, E, 0);
+    sol = assemble_solution(x, u, t, J, E, Q_u, Q_uu, Q_ux, 0);
 end
 
 %% Helper Functions for DDP Algorithm
@@ -166,17 +167,18 @@ end
 %
 % Inputs
 %
-% x     : locally optimal state trajectory
-% u     : locally optimal control sequence
-% t     : discretized time stamps
-% J     : iteration history of cost function
-% E     : iteration history of control energy
-% error : zero if no error, nonzero else
+% x               : locally optimal state trajectory
+% u               : locally optimal control sequence
+% t               : discretized time stamps
+% J               : iteration history of cost function
+% E               : iteration history of control energy
+% Q_u, Q_uu, Q_ux : derivatives of state action value function
+% error           : zero if no error, nonzero else
 %
 % Outputs
 %
 % sol : solution structure
-function sol = assemble_solution(x, u, t, J, E, error)
+function sol = assemble_solution(x, u, t, J, E, Q_u, Q_uu, Q_ux, error)
 
     % Solution structure
     sol = struct;
@@ -187,6 +189,9 @@ function sol = assemble_solution(x, u, t, J, E, error)
     sol.dt = t(2) - t(1);
     sol.J = J;
     sol.E = E;
+    sol.Q_u = Q_u;
+    sol.Q_uu = Q_uu;
+    sol.Q_ux = Q_ux;
     
     return
 end
